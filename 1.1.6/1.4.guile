@@ -1,0 +1,24 @@
+;われわれの評価モデルは, 演算子が合成式である組合せでも使えることを観察せよ.
+; それに従って, 次の手続きの振舞いを述べよ.
+
+(define (a-plus-abs-b a b)
+  ((if (> b 0) + -) a b)
+)
+
+,trace
+(a-plus-abs-b 1 2) ;3
+,trace
+(a-plus-abs-b 2 1) ; 3
+
+,trace
+(a-plus-abs-b 1 -2) ; 3
+,trace
+(a-plus-abs-b 2 -1) ; 3
+
+,trace
+(a-plus-abs-b -1 2) ; 1
+,trace
+(a-plus-abs-b -2 1) ; -1
+
+;a + 絶対値 b となる
+
