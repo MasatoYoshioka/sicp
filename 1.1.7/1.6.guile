@@ -1,0 +1,44 @@
+(define (new-if predicate then-clause else-clause)
+  (cond (predicate then-clause)
+    (else else-clause)))
+
+(define (new-if2 predicate then-clause else-clause)
+  (cond ((predicate) then-clause)
+    (else else-clause)))
+
+,trace
+(new-if (= 2 3) 0 5)
+
+,trace
+(new-if (= 1 1) 0 5)
+
+(define (square x)
+  (* x x))
+
+(define (average x y)
+  (/ (+ x y ) 2))
+
+(define (imporve guess x)
+  (average guess (/ x guess)))
+
+(define (good-enough? guess x)
+  (< (abs (- (square guess) x )) 0.001))
+
+(define (sqrt-iter guess x)
+  (new-if (good-enough? guess x)
+    guess
+    (sqrt-iter (imporve guess x)
+      x )))
+
+(define (sqrt x)
+  (sqrt-iter 1.0 x))
+
+
+,trace
+(sqrt 4)
+
+; ループが終わらない
+;  なぜ、正規順序、作用的順序の関係か
+;  new-ifはすでに作用的順序により評価されている
+;  なので、new-ifに呼ばれるelse-clauseの(sqrt-iter (imporve guess x ) x) が
+;  new-ifを呼ぶ時に評価されているので、ループが続く
