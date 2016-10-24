@@ -1,0 +1,38 @@
+;平方根の計算で使ったgood-enough?テストは, 非常に小さい数の平方根をとる時には効果的ではない. 
+;また, 実際の計算機では, 算術演算は殆んどの場合, 限られた精度で実行される.
+; それでわれわれのテストは非常に大きい数にも不適切である.
+; 小さい数, 大きい数の場合, どのようにテストが失敗するかの例を使ってこのことを説明せよ.
+;
+; good-enough?を実装するもう一つの戦略は, ある繰返しから次へのguessの変化に注目し,
+; 変化が予測値に比べ非常に小さくなった時に止めるのである.
+; こういう終了テストを使う平方根手続きを設計せよ.
+; これは小さい数, 大きい数に対してうまく働くか. 
+
+(define (square x)
+  (* x x))
+
+(define (average x y)
+  (/ (+ x y ) 2))
+
+(define (imporve guess x)
+  (average guess (/ x guess)))
+
+(define (good-enough? guess x)
+  (< (abs (- (square guess) x )) 0.001))
+
+(define (sqrt-iter guess x)
+  (if (good-enough? guess x)
+    guess
+    (sqrt-iter (imporve guess x)
+      x )))
+
+(define (sqrt x)
+  (sqrt-iter 1.0 x))
+
+(sqrt 2)
+(sqrt 0.000002)
+(sqrt 0.000000000002)
+(sqrt 0.000003)
+(sqrt 0.000004)
+(sqrt 0.000005)
+;(sqrt 100000000000000000000000000000)
